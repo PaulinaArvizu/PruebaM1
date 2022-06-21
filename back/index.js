@@ -211,11 +211,6 @@ function farmManagerPaddocks() {
             );
         //ordenar
         manager.farms.sort();
-
-        //eliminar llaves innecesarias
-        delete manager.taxNumber;
-        delete manager.id;
-      
     });
 
     let result = {};
