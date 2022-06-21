@@ -24,6 +24,13 @@ function BinarioADecimal(num) {
  *  ....
  */
 function counter() {
+    let counter = 0;
+
+    function add() {
+        counter++;
+        return counter;
+    }
+    return add;
 }
 
 // =================== EJERCICIO 3 ===================
@@ -49,8 +56,8 @@ function getNombre(){
     return this.nombre;
 }
 
-let getNombreInstructor = undefined;
-let getNombreAlumno = undefined;
+let getNombreInstructor = getNombre.bind(instructor);
+let getNombreAlumno = getNombre.bind(alumno);
 
 // =================== ===========  CASO DE PRUEBA ===========  ===================
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
@@ -137,7 +144,7 @@ function sortPaddockTypeByTotalArea() {
     //objeto que sume el area de todos los cultivos
     let paddockTotalArea = [{id: 1, total: 0}, {id: 2, total: 0}, {id: 3, total: 0}, {id: 4, total: 0}];
     paddocks.forEach(paddock => {
-        paddockTotalArea[paddock.paddockTypeId - 1] += paddock.area;
+        paddockTotalArea[paddock.paddockTypeId - 1].total += paddock.area;
     });
 
     //ordenar cultivos
@@ -163,7 +170,7 @@ function sortFarmManagerByAdminArea() {
     //objeto que sume el area de todos los cultivos
     let paddockTotalArea = [{id: 1, total: 0}, {id: 2, total: 0}, {id: 3, total: 0}, {id: 4, total: 0}, {id: 5, total: 0}, {id: 6, total: 0}];
     paddocks.forEach(paddock => {
-        paddockTotalArea[paddock.paddockManagerId - 1] += paddock.area;
+        paddockTotalArea[paddock.paddockManagerId - 1].total += paddock.area;
     });
 
     //ordenar cultivos
@@ -188,11 +195,15 @@ function farmManagerPaddocks() {
     managers.forEach(manager => {
         manager.farms = [];
         paddocks.forEach(paddock => {
+          // console.log(manager.farms)
             //si el manager tiene ese campo, agregarlo al arreglo
-            if(paddock.paddockManagerId==manager.id && manager.farms.indexOf(paddock.farmId == -1))
-                manager.farms.push(paddock.farmId);
+            if(paddock.paddockManagerId==manager.id && manager.farms.indexOf(paddock.farmId) == -1)
+            {
+              // console.log(paddock.farmId);
+              manager.farms.push(paddock.farmId);
+            }
         });
-
+      
         //cambiar farmId por nombre en la lista y ordenar alfabeticamente
         //poner nombre
         manager.farms = manager.farms.map(farm => 
@@ -204,8 +215,13 @@ function farmManagerPaddocks() {
         //eliminar llaves innecesarias
         delete manager.taxNumber;
         delete manager.id;
+      
     });
-    return managers;
+
+    let result = {};
+    managers.forEach((manager) => {result[manager.name] = manager.farms});
+  
+    return result;
 }
 
 
